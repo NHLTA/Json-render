@@ -3,99 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NHL Trade Alert - Tweets</title>
+  <title>NHL Trade Alerts</title>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 2rem;
-      max-width: 800px;
+      padding: 1rem;
+      max-width: 700px;
       margin: auto;
     }
-    h1 {
-      text-align: center;
-    }
     form {
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
       border: 1px solid #ccc;
-      padding: 1rem;
       border-radius: 8px;
-      background-color: #f9f9f9;
     }
-    label, input, textarea {
-      display: block;
+    input, textarea {
       width: 100%;
+      padding: 0.5rem;
       margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
     }
-    textarea {
-      height: 4rem;
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #0074D9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
     }
-    .tweet-block {
-      margin-bottom: 3rem;
-      padding: 1rem;
-      border-bottom: 1px solid #ddd;
+    button:hover {
+      background-color: #005fa3;
+    }
+    .tweet {
+      margin-bottom: 2rem;
     }
   </style>
 </head>
 <body>
-  <h1>NHL Trade Alert - Tweets</h1>
+  <h1>NHL Trade Alert Post Helper</h1>
 
-  <!-- 👇 Form to generate tweet code -->
-  <form id="tweetForm">
-    <h2>Add a New Tweet</h2>
-    <label for="title">Tweet Title (e.g. 06-11-25 01):</label>
-    <input type="text" id="title" required />
-
-    <label for="tweetURL">Tweet URL:</label>
-    <input type="text" id="tweetURL" required />
-
-    <p>👇 Copy this JSON block into your <code>tweets.json</code> file after submitting:</p>
-    <textarea id="output" readonly></textarea>
-
-    <button type="submit">Generate Tweet Code</button>
+  <form id="embedForm">
+    <label for="embedCode">Paste embed code here:</label>
+    <textarea id="embedCode" rows="6" required></textarea>
+    <button type="submit">Generate JSON Entry</button>
   </form>
 
-  <!-- 👇 Live preview of all tweets -->
-  <h2>All Tweets on Site:</h2>
-  <div id="tweetContainer"></div>
+  <pre id="jsonOutput"></pre>
+
+  <div id="tweetsContainer"></div>
 
   <script>
-    // Handle form submit and generate code
-    document.getElementById('tweetForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const title = document.getElementById('title').value.trim();
-      const tweetURL = document.getElementById('tweetURL').value.trim();
-
-      const embedCode = `<blockquote class='twitter-tweet'><a href='${tweetURL}'></a></blockquote>`;
-      const jsonOutput = JSON.stringify({ title, embed: embedCode }, null, 2);
-
-      document.getElementById('output').value = jsonOutput;
-    });
-
-    // Fetch and display tweets from tweets.json
+    // Load tweets from tweets.json
     fetch('tweets.json')
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        const container = document.getElementById('tweetContainer');
-        data.forEach(tweet => {
-          const div = document.createElement('div');
-          div.className = 'tweet-block';
-          div.innerHTML = `<h3>${tweet.title}</h3>${tweet.embed}`;
-          container.appendChild(div);
+      .then(response => response.json())
+      .then(tweets => {
+        const tweetsContainer = document.getElementById('tweetsContainer');
+        tweets.forEach(tweet => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'tweet';
+          wrapper.innerHTML = tweet.embed;
+          tweetsContainer.appendChild(wrapper);
         });
+        // Load Twitter widgets after adding tweets to DOM
         if (window.twttr && window.twttr.widgets) {
-          window.twttr.widgets.load(container);
+          window.twttr.widgets.load();
         }
       })
-      .catch(err => {
-        console.error('Error loading tweets.json:', err);
-        document.getElementById('tweetContainer').innerHTML = `
-          <p style="color: red;">⚠️ Error loading tweets. Make sure <code>tweets.json</code> is uploaded and contains valid JSON.</p>
-        `;
+      .catch(error => {
+        const tweetsContainer = document.getElementById('tweetsContainer');
+        tweetsContainer.innerHTML = "<p>Error loading tweets. Make sure tweets.json is uploaded and contains valid JSON.</p>";
+        console.error('Error loading tweets:', error);
       });
+
+    // Generate JSON entry from embed code input
+    const form = document.getElementById('embedForm');
+    const jsonOutput = document.getElementById('jsonOutput');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const embedCode = document.getElementById('embedCode').value.trim();
+      if (embedCode) {
+        const entry = {
+          embed: embedCode
+        };
+        jsonOutput.textContent = JSON.stringify(entry, null, 2);
+      }
+    });
   </script>
 </body>
 </html>
