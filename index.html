@@ -4,96 +4,109 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>NHL Trade Alert</title>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fff;
-      color: #000;
-      padding: 20px;
+      margin: 20px;
+      background-color: #f8f9fa;
     }
-    #tweetForm {
-      display: none;
-      margin-top: 20px;
-    }
-    .tweet {
+    #form-container, #password-form {
       margin-bottom: 30px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     input, textarea, button {
-      display: block;
-      margin: 10px 0;
-      padding: 8px;
       width: 100%;
-      max-width: 500px;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .tweet-container {
+      margin-bottom: 40px;
     }
   </style>
 </head>
 <body>
-  <h1>NHL Trade Alert</h1>
 
-  <!-- Password Field -->
-  <div id="passwordAccess">
-    <input type="password" id="passwordInput" placeholder="Password" />
-    <button onclick="checkPassword()">Unlock</button>
+  <!-- Password protection for form -->
+  <div id="password-form">
+    <h3>Enter password to unlock form</h3>
+    <input type="password" id="passwordInput" placeholder="Enter password"/>
+    <button onclick="checkPassword()">Submit</button>
   </div>
 
-  <!-- Hidden Form -->
-  <div id="tweetForm">
-    <h2>Add a Tweet</h2>
-    <form id="generateForm">
-      <label for="embed">Paste Twitter Embed Code:</label>
-      <textarea id="embed" name="embed" rows="4" required></textarea>
-      <button type="submit">Generate JSON Code</button>
-    </form>
-    <p><strong>Copy this and paste it into your <code>tweets.json</code> file:</strong></p>
-    <pre id="output"></pre>
+  <!-- Hidden tweet form -->
+  <div id="form-container" style="display:none;">
+    <h3>Add a Tweet</h3>
+    <input type="text" id="tweetUrl" placeholder="Paste Tweet URL (e.g., https://x.com/...)">
+    <button onclick="generateCode()">Generate Embed Code</button>
+    <textarea id="outputCode" rows="5" readonly></textarea>
   </div>
 
-  <!-- Tweets Section -->
-  <div id="tweetsContainer"></div>
+  <!-- Tweet display -->
+  <div id="tweets"></div>
 
   <script>
-    const correctPassword = "nhltradealert2025";
+    // Load tweets.json
+    fetch('tweets.json')
+      .then(response => response.json())
+      .then(data => {
+        const tweetsDiv = document.getElementById('tweets');
+        data.reverse().forEach(tweet => {
+          const container = document.createElement('div');
+          container.className = 'tweet-container';
+          container.innerHTML = tweet.embed;
+          tweetsDiv.appendChild(container);
+        });
 
+        // Load Twitter widgets.js to render embeds
+        const script = document.createElement('script');
+        script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
+        document.body.appendChild(script);
+      })
+      .catch(error => {
+        document.getElementById('tweets').innerHTML = '<p>Error loading tweets. Make sure tweets.json is uploaded and contains valid JSON.</p>';
+        console.error('Error loading tweets:', error);
+      });
+
+    // Password protection
     function checkPassword() {
-      const input = document.getElementById("passwordInput").value;
-      if (input === correctPassword) {
-        document.getElementById("tweetForm").style.display = "block";
-        document.getElementById("passwordAccess").style.display = "none";
+      const input = document.getElementById('passwordInput').value;
+      if (input === "nhltradealert2025") {
+        document.getElementById('form-container').style.display = 'block';
+        document.getElementById('password-form').style.display = 'none';
       } else {
-        alert("Incorrect password");
+        alert("Incorrect password.");
       }
     }
 
-    // Form Submit Handler
-    document.getElementById("generateForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-      const embedCode = document.getElementById("embed").value.trim();
-      const jsonOutput = {
-        embed: embedCode
-      };
-      document.getElementById("output").textContent = JSON.stringify(jsonOutput, null, 2) + ",";
-    });
+    // Generate Tweet embed code
+    function generateCode() {
+      const url = document.getElementById('tweetUrl').value.trim();
 
-    // Load tweets from JSON
-    fetch("tweets.json")
-      .then((response) => response.json())
-      .then((tweets) => {
-        const container = document.getElementById("tweetsContainer");
-        tweets.forEach((tweet) => {
-          const div = document.createElement("div");
-          div.className = "tweet";
-          div.innerHTML = tweet.embed;
-          container.appendChild(div);
-        });
-        if (window.twttr && window.twttr.widgets) {
-          window.twttr.widgets.load();
-        }
-      })
-      .catch((error) => {
-        console.error("Error loading tweets:", error);
-        document.getElementById("tweetsContainer").innerText = "Error loading tweets. Make sure tweets.json is uploaded and contains valid JSON.";
-      });
+      if (!url.includes("twitter.com") && !url.includes("x.com")) {
+        alert("Please enter a valid Twitter/X URL.");
+        return;
+      }
+
+      const embedCode = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+
+      document.getElementById('outputCode').value = embedCode;
+    }
   </script>
+
 </body>
 </html>
