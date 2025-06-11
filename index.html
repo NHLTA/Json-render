@@ -1,38 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NHL Trade Feed</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add New Tweet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      font-size: 24px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #preview {
+      margin-top: 30px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
+  <h1>Add New Tweet</h1>
+  <form id="tweetForm">
+    <label for="title">Title (e.g. 06-11-25 01):</label>
+    <input type="text" id="title" name="title" required />
 
-  <section style="margin: 2em 0;">
-    <h2>Add a New Tweet</h2>
-    <form id="tweetForm" style="margin-bottom: 1em;">
-      <label for="title">Title / Date:</label><br>
-      <input type="text" id="title" name="title" placeholder="e.g. 06-11-25 01" required style="width: 300px;"><br><br>
+    <label for="tweetUrl">Tweet or X URL:</label>
+    <input type="text" id="tweetUrl" name="tweetUrl" required />
 
-      <label for="tweetUrl">Tweet URL:</label><br>
-      <input type="url" id="tweetUrl" name="tweetUrl" placeholder="https://twitter.com/..." required style="width: 100%; max-width: 500px;"><br><br>
+    <button type="submit">Add Tweet</button>
+  </form>
 
-      <button type="submit">Add Tweet</button>
-    </form>
+  <div id="preview"></div>
 
-    <hr>
-
-    <h2>Preview:</h2>
-    <div id="previewArea"></div>
-  </section>
-
-  <section style="margin-top: 3em;">
-    <h2>Recent Tweets</h2>
-    <div id="tweetsContainer"></div>
-  </section>
-
-  <script src="script.js"></script>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>
+    const form = document.getElementById('tweetForm');
+    const preview = document.getElementById('preview');
 
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      let tweetUrl = document.getElementById('tweetUrl').value.trim();
+      const title = document.getElementById('title').value.trim();
+
+      // Normalize URL: convert x.com to twitter.com
+      tweetUrl = tweetUrl.replace("https://x.com/", "https://twitter.com/");
+
+      if (!tweetUrl.startsWith("https://twitter.com/")) {
+        alert("Please enter a valid Twitter or X URL.");
+        return;
+      }
+
+      // Build embed HTML
+      const embed = `<blockquote class="twitter-tweet"><a href="${tweetUrl}"></a></blockquote>`;
+
+      // Show embed preview
+      preview.innerHTML = `<h3>${title}</h3>${embed}`;
+
+      // Load the embed
+      if (window.twttr && window.twttr.widgets) {
+        window.twttr.widgets.load(preview);
+      }
+
+      // Prepare JSON object
+      const tweetObject = {
+        title: title,
+        embed: embed
+      };
+      const tweetJsonString = JSON.stringify(tweetObject, null, 2);
+
+      // Copy JSON to clipboard
+      navigator.clipboard.writeText(tweetJsonString).then(() => {
+        alert("Tweet JSON copied to clipboard. Paste it into tweets.json on GitHub.");
+      }).catch(() => {
+        alert("Failed to copy JSON to clipboard.");
+      });
+    });
+  </script>
 </body>
 </html>
