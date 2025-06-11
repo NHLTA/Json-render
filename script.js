@@ -9,10 +9,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const title = document.getElementById('title').value.trim();
     const tweetUrl = document.getElementById('tweetUrl').value.trim();
 
-    if (!tweetUrl.startsWith("https://twitter.com/")) {
-      alert("Please enter a valid Twitter URL.");
-      return;
-    }
+    if (
+  !tweetURL.startsWith("https://twitter.com/") &&
+  !tweetURL.startsWith("https://x.com/")
+) {
+  alert("Please enter a valid Twitter or X URL.");
+  return;
+}
+
 
     // Generate embed code from tweet URL
     const embed = `<blockquote class="twitter-tweet"><a href="${tweetUrl}"></a></blockquote>`;
