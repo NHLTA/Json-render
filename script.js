@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const tweetUrl = document.getElementById('tweetUrl').value.trim();
 
     if (
-  !tweetURL.startsWith("https://twitter.com/") &&
-  !tweetURL.startsWith("https://x.com/")
+  !tweetUrl.startsWith("https://twitter.com/") &&
+  !tweetUrl.startsWith("https://x.com/")
 ) {
   alert("Please enter a valid Twitter or X URL.");
   return;
