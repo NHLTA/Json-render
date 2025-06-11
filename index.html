@@ -1,18 +1,38 @@
-<!-- Add Tweet Form -->
-<section style="margin: 2em 0;">
-  <h2>Add a New Tweet</h2>
-  <form id="tweetForm" style="margin-bottom: 1em;">
-    <label for="title">Title / Date:</label><br>
-    <input type="text" id="title" name="title" placeholder="e.g. 06-11-25 01" required style="width: 300px;"><br><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NHL Trade Feed</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <label for="tweetUrl">Tweet URL:</label><br>
-    <input type="url" id="tweetUrl" name="tweetUrl" placeholder="https://twitter.com/..." required style="width: 100%; max-width: 500px;"><br><br>
+  <section style="margin: 2em 0;">
+    <h2>Add a New Tweet</h2>
+    <form id="tweetForm" style="margin-bottom: 1em;">
+      <label for="title">Title / Date:</label><br>
+      <input type="text" id="title" name="title" placeholder="e.g. 06-11-25 01" required style="width: 300px;"><br><br>
 
-    <button type="submit">Add Tweet</button>
-  </form>
+      <label for="tweetUrl">Tweet URL:</label><br>
+      <input type="url" id="tweetUrl" name="tweetUrl" placeholder="https://twitter.com/..." required style="width: 100%; max-width: 500px;"><br><br>
 
-  <hr>
+      <button type="submit">Add Tweet</button>
+    </form>
 
-  <h2>Preview:</h2>
-  <div id="previewArea"></div>
-</section>
+    <hr>
+
+    <h2>Preview:</h2>
+    <div id="previewArea"></div>
+  </section>
+
+  <section style="margin-top: 3em;">
+    <h2>Recent Tweets</h2>
+    <div id="tweetsContainer"></div>
+  </section>
+
+  <script src="script.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</body>
+</html>
