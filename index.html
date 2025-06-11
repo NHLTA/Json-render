@@ -3,95 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NHL Trade Alerts</title>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <title>NHL Trade Tracker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 1rem;
-      max-width: 700px;
-      margin: auto;
+      padding: 20px;
+      background: #f9f9f9;
     }
-    form {
-      margin-bottom: 2rem;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+    #tweetContainer blockquote {
+      margin-bottom: 40px;
     }
-    input, textarea {
+    #tweetFormSection {
+      display: none;
+      margin-top: 40px;
+    }
+    #passwordPrompt {
+      margin-top: 40px;
+    }
+    input, textarea, button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
       width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      margin-bottom: 1rem;
-      font-size: 1rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      background-color: #0074D9;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #005fa3;
-    }
-    .tweet {
-      margin-bottom: 2rem;
+      max-width: 600px;
     }
   </style>
 </head>
 <body>
-  <h1>NHL Trade Alert Post Helper</h1>
+  <h1>NHL Trade Tracker</h1>
 
-  <form id="embedForm">
-    <label for="embedCode">Paste embed code here:</label>
-    <textarea id="embedCode" rows="6" required></textarea>
-    <button type="submit">Generate JSON Entry</button>
-  </form>
+  <!-- Password Prompt -->
+  <div id="passwordPrompt">
+    <input type="password" id="passwordInput" placeholder="Enter password to unlock form">
+    <button onclick="checkPassword()">Unlock Form</button>
+  </div>
 
-  <pre id="jsonOutput"></pre>
+  <!-- Hidden Form (only shown after correct password) -->
+  <div id="tweetFormSection">
+    <h2>Tweet Embed Code Generator</h2>
+    <textarea id="tweetUrlInput" placeholder="Paste Twitter/Bluesky post URL here"></textarea>
+    <button onclick="generateJsonCode()">Generate JSON Embed Code</button>
+    <pre id="outputBox" style="background:#eee; padding:10px;"></pre>
+  </div>
 
-  <div id="tweetsContainer"></div>
+  <!-- Tweet display section -->
+  <div id="tweetContainer"></div>
 
   <script>
-    // Load tweets from tweets.json
+    // Password protection
+    const correctPassword = "nhltrade2025";
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      if (input === correctPassword) {
+        document.getElementById("passwordPrompt").style.display = "none";
+        document.getElementById("tweetFormSection").style.display = "block";
+      } else {
+        alert("Incorrect password. Try again.");
+      }
+    }
+
+    // Load tweets
     fetch('tweets.json')
       .then(response => response.json())
-      .then(tweets => {
-        const tweetsContainer = document.getElementById('tweetsContainer');
-        tweets.forEach(tweet => {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'tweet';
-          wrapper.innerHTML = tweet.embed;
-          tweetsContainer.appendChild(wrapper);
+      .then(data => {
+        const container = document.getElementById('tweetContainer');
+        data.forEach(tweet => {
+          const div = document.createElement('div');
+          div.innerHTML = tweet.embed;
+          container.appendChild(div);
         });
-        // Load Twitter widgets after adding tweets to DOM
-        if (window.twttr && window.twttr.widgets) {
-          window.twttr.widgets.load();
-        }
+        // Twitter widgets script
+        const script = document.createElement('script');
+        script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
+        document.body.appendChild(script);
       })
       .catch(error => {
-        const tweetsContainer = document.getElementById('tweetsContainer');
-        tweetsContainer.innerHTML = "<p>Error loading tweets. Make sure tweets.json is uploaded and contains valid JSON.</p>";
-        console.error('Error loading tweets:', error);
+        document.getElementById('tweetContainer').innerHTML = '<p style="color:red;">Error loading tweets. Make sure tweets.json is uploaded and contains valid JSON.</p>';
       });
 
-    // Generate JSON entry from embed code input
-    const form = document.getElementById('embedForm');
-    const jsonOutput = document.getElementById('jsonOutput');
-
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      const embedCode = document.getElementById('embedCode').value.trim();
-      if (embedCode) {
-        const entry = {
-          embed: embedCode
-        };
-        jsonOutput.textContent = JSON.stringify(entry, null, 2);
+    // JSON Generator
+    function generateJsonCode() {
+      const url = document.getElementById("tweetUrlInput").value.trim();
+      if (!url) {
+        alert("Please enter a URL.");
+        return;
       }
-    });
+
+      const embedCode = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
+      const title = new Date().toISOString().slice(2, 10).replace(/-/g, '-') + " XX";
+
+      const result = {
+        title: title,
+        embed: embedCode
+      };
+
+      document.getElementById("outputBox").textContent = JSON.stringify(result, null, 2);
+    }
   </script>
 </body>
 </html>
