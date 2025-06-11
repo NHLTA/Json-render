@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Add New Tweet</title>
+  <title>NHL Trade Alerts</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,12 +29,15 @@
       font-size: 16px;
       cursor: pointer;
     }
-    #preview {
+    #preview, #tweets {
       margin-top: 30px;
       background: white;
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    blockquote {
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -50,10 +53,34 @@
     <button type="submit">Add Tweet</button>
   </form>
 
-  <div id="preview"></div>
+  <div id="preview">
+    <h2>Preview:</h2>
+  </div>
+
+  <div id="tweets">
+    <h2>All Tweets on Site:</h2>
+    <div id="tweetContainer"></div>
+  </div>
 
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
   <script>
+    // Load existing tweets from tweets.json
+    fetch('tweets.json')
+      .then(res => res.json())
+      .then(data => {
+        const tweetContainer = document.getElementById('tweetContainer');
+        data.forEach(tweet => {
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = `<h4>${tweet.title}</h4>${tweet.embed}`;
+          tweetContainer.appendChild(wrapper);
+        });
+        if (window.twttr && window.twttr.widgets) {
+          window.twttr.widgets.load(tweetContainer);
+        }
+      });
+
+    // Handle form submission
     const form = document.getElementById('tweetForm');
     const preview = document.getElementById('preview');
 
@@ -63,7 +90,7 @@
       let tweetUrl = document.getElementById('tweetUrl').value.trim();
       const title = document.getElementById('title').value.trim();
 
-      // Normalize URL: convert x.com to twitter.com
+      // Normalize x.com → twitter.com
       tweetUrl = tweetUrl.replace("https://x.com/", "https://twitter.com/");
 
       if (!tweetUrl.startsWith("https://twitter.com/")) {
@@ -71,29 +98,22 @@
         return;
       }
 
-      // Build embed HTML
       const embed = `<blockquote class="twitter-tweet"><a href="${tweetUrl}"></a></blockquote>`;
 
-      // Show embed preview
-      preview.innerHTML = `<h3>${title}</h3>${embed}`;
-
-      // Load the embed
+      // Show preview
+      preview.innerHTML = `<h2>Preview:</h2><h4>${title}</h4>${embed}`;
       if (window.twttr && window.twttr.widgets) {
         window.twttr.widgets.load(preview);
       }
 
-      // Prepare JSON object
       const tweetObject = {
         title: title,
         embed: embed
       };
-      const tweetJsonString = JSON.stringify(tweetObject, null, 2);
 
-      // Copy JSON to clipboard
+      const tweetJsonString = JSON.stringify(tweetObject, null, 2);
       navigator.clipboard.writeText(tweetJsonString).then(() => {
         alert("Tweet JSON copied to clipboard. Paste it into tweets.json on GitHub.");
-      }).catch(() => {
-        alert("Failed to copy JSON to clipboard.");
       });
     });
   </script>
