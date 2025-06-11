@@ -1,34 +1,18 @@
-<h2>Add a New Tweet</h2>
-<form id="tweetForm">
-  <label for="title">Title / Date:</label><br>
-  <input type="text" id="title" name="title" required><br><br>
+<!-- Add Tweet Form -->
+<section style="margin: 2em 0;">
+  <h2>Add a New Tweet</h2>
+  <form id="tweetForm" style="margin-bottom: 1em;">
+    <label for="title">Title / Date:</label><br>
+    <input type="text" id="title" name="title" placeholder="e.g. 06-11-25 01" required style="width: 300px;"><br><br>
 
-  <label for="embed">Tweet Embed Code:</label><br>
-  <textarea id="embed" name="embed" rows="6" cols="60" required></textarea><br><br>
+    <label for="tweetUrl">Tweet URL:</label><br>
+    <input type="url" id="tweetUrl" name="tweetUrl" placeholder="https://twitter.com/..." required style="width: 100%; max-width: 500px;"><br><br>
 
-  <button type="submit">Add Tweet</button>
-</form>
+    <button type="submit">Add Tweet</button>
+  </form>
 
-<hr>
+  <hr>
 
-<h2>Preview:</h2>
-<div id="previewArea"></div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>NHL Trade Tracker</title>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-    h1 { text-align: center; }
-    .tweet { margin: 30px auto; max-width: 600px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-  </style>
-</head>
-<body>
-  <h1>NHL Trade News</h1>
-  <div id="tweets"></div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+  <h2>Preview:</h2>
+  <div id="previewArea"></div>
+</section>
