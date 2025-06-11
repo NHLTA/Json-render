@@ -1,13 +1,4 @@
-fetch('tweets.json')
-  .then(response => response.json())
-  .then(data => {
-    const container = document.getElementById('tweets');
-    data.forEach(item => {
-      const tweetDiv = document.createElement('div');
-      tweetDiv.classList.add('tweet');
-      tweetDiv.innerHTML = item.embed;
-      container.appendChild(tweetDiv);
-      document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('tweetForm');
   const preview = document.getElementById('previewArea');
 
@@ -15,22 +6,33 @@ fetch('tweets.json')
     e.preventDefault();
 
     const title = document.getElementById('title').value.trim();
-    const embed = document.getElementById('embed').value.trim();
+    const tweetUrl = document.getElementById('tweetUrl').value.trim();
 
-    // Live preview
+    // Validate the URL format
+    if (!tweetUrl.startsWith("https://twitter.com/")) {
+      alert("Please enter a valid Twitter URL.");
+      return;
+    }
+
+    // Build embed code from tweet URL
+    const embed = `<blockquote class="twitter-tweet"><a href="${tweetUrl}"></a></blockquote>`;
+
+    // Show live preview
     preview.innerHTML = `<h3>${title}</h3>${embed}`;
 
-    // Optional: Add to clipboard (see quick copy option below)
+    // Copy to clipboard
     const tweetObject = {
       title: title,
       embed: embed
     };
     const tweetJsonString = JSON.stringify(tweetObject, null, 2);
     navigator.clipboard.writeText(tweetJsonString).then(() => {
-      alert("Tweet copied to clipboard. Paste it into tweets.json on GitHub.");
+      alert("Tweet JSON copied to clipboard. Paste it into tweets.json on GitHub.");
     });
+
+    // Optional: Trigger Twitter's embed JS (if not already active)
+    if (window.twttr && window.twttr.widgets) {
+      window.twttr.widgets.load(preview);
+    }
   });
 });
-
-    });
-  });
