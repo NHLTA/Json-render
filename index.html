@@ -65,7 +65,7 @@
       .then(response => response.json())
       .then(data => {
         const tweetsDiv = document.getElementById('tweets');
-        data.reverse().forEach(tweet => {
+        data.forEach(tweet => {
           const container = document.createElement('div');
           container.className = 'tweet-container';
           container.innerHTML = tweet.embed;
