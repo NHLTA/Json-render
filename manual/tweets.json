@@ -1,57 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Manual NHL Trade Feed</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-
-    .tweet {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-  </style>
-</head>
-<body>
-  <h1>Manual NHL Trade Feed</h1>
-  <div id="tweets-container">Loading tweets...</div>
-
-  <script>
-    fetch('tweets.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('tweets-container');
-        container.innerHTML = ''; // Clear loading text
-
-        data.forEach(tweet => {
-          const tweetDiv = document.createElement('div');
-          tweetDiv.className = 'tweet';
-          tweetDiv.innerHTML = tweet.embed;
-          container.appendChild(tweetDiv);
-        });
-
-        // Load Twitter widget script after all tweets are added
-        if (typeof twttr !== 'undefined') {
-          twttr.widgets.load();
-        } else {
-          const script = document.createElement('script');
-          script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-          document.body.appendChild(script);
-        }
-      })
-      .catch(error => {
-        document.getElementById('tweets-container').innerText = 'Failed to load tweets.';
-        console.error('Error fetching tweets.json:', error);
-      });
-  </script>
-</body>
-</html>
+[
+    {
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>The Fan Hockey Show: Elliotte says Kreider would have been aware of this trade happening &amp; would be surprised if Kreider doesn&#39;t waive to get the trade done. We&#39;re just waiting for the formalities and &quot;the hope is it will be done this afternoon&quot;. <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> <a href='https://twitter.com/hashtag/FlyTogether?src=hash&amp;ref_src=twsrc%5Etfw'>#FlyTogether</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a>… <a href='https://t.co/JHz85guJes'>pic.twitter.com/JHz85guJes</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932851945032605899?ref_src=twsrc%5Etfw'>June 11, 2025</a></blockquote>"
+  },
+    
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'><a href='https://twitter.com/hashtag/TexasHockey?src=hash&amp;ref_src=twsrc%5Etfw'>#TexasHockey</a> are indeed taking calls on Jason Robertson, but GM Jim Nill is hesitant to move him. As they look to free up some cap space, I&#39;m told they are shopping Mason Marchment, who is entering the final year of his contract ($4.5M AAV) <a href='https://t.co/OJjAyGBHXD'>https://t.co/OJjAyGBHXD</a></p>&mdash; David Pagnotta (@TheFourthPeriod) <a href='https://twitter.com/TheFourthPeriod/status/1932833185613951230?ref_src=twsrc%5Etfw'>June 11, 2025</a></blockquote>"
+  },
+  
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>There are still hurdles to clear, with <a href='https://twitter.com/PierreVLeBrun?ref_src=twsrc%5Etfw'>@PierreVLeBrun</a> reporting that Chris Kreider has Anaheim on his 15-team no-trade list, but a deal is in place to send the longest-tenured <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> to Anaheim.<br><br>Here&#39;s everything I have on the brewing trade 👇<a href='https://t.co/7jLjZaKEsr'>https://t.co/7jLjZaKEsr</a></p>&mdash; Vince Z. Mercogliano (@vzmercogliano) <a href='https://twitter.com/vzmercogliano/status/1932819026855534985?ref_src=twsrc%5Etfw'>June 11, 2025</a></blockquote>"
+  },
+  
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>I have been told that Drury and Kreider&#39;s camp have been in constant comunnication through the off-season so I would be surprised if a no-trade list becomes an issue.</p>&mdash; Larry Brooks (@NYP_Brooksie) <a href='https://twitter.com/NYP_Brooksie/status/1932815874844410242?ref_src=twsrc%5Etfw'>June 11, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>The prospect going the other way in the Chris Krieder trade looks to be Carey Terrance per <a href='https://twitter.com/frank_seravalli?ref_src=twsrc%5Etfw'>@frank_seravalli</a>. Frank says the deal won’t be finalized tonight. <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> <a href='https://twitter.com/hashtag/FlyTogether?src=hash&amp;ref_src=twsrc%5Etfw'>#FlyTogether</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a> <a href='https://twitter.com/hashtag/StanleyCup?src=hash&amp;ref_src=twsrc%5Etfw'>#StanleyCup</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932633835726123455?ref_src=twsrc%5Etfw'>June 11, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>Frank Seravalli is reporting that New York is in “advanced discussions” with Anaheim on a Chris Krieder trade. <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> <a href='https://twitter.com/hashtag/flytogether?src=hash&amp;ref_src=twsrc%5Etfw'>#flytogether</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a> <a href='https://twitter.com/hashtag/StanleyCup?src=hash&amp;ref_src=twsrc%5Etfw'>#StanleyCup</a> <a href='https://t.co/zFlXC0wHja'>pic.twitter.com/zFlXC0wHja</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932622740378603946?ref_src=twsrc%5Etfw'>June 11, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>On <a href='https://twitter.com/thesheethockey?ref_src=twsrc%5Etfw'>@thesheethockey</a> today <a href='https://twitter.com/JeffMarek?ref_src=twsrc%5Etfw'>@JeffMarek</a> is talking again about Dallas possibly trading Jason Robertson. Says there is something there. Speculates Ottawa then talks Anaheim taking a huge swing (in general but in the Dallas/Robertson conversation). <a href='https://twitter.com/hashtag/TexasHockey?src=hash&amp;ref_src=twsrc%5Etfw'>#TexasHockey</a> <a href='https://twitter.com/hashtag/GoSensGo?src=hash&amp;ref_src=twsrc%5Etfw'>#GoSensGo</a> <a href='https://twitter.com/hashtag/FlyTogether?src=hash&amp;ref_src=twsrc%5Etfw'>#FlyTogether</a>… <a href='https://t.co/IqylMbszEj'>pic.twitter.com/IqylMbszEj</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932569897688760435?ref_src=twsrc%5Etfw'>June 10, 2025</a></blockquote>"
+  },
+    {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>On William Karlsson: Rumour is he&#39;s on the trade block. Elliotte talks about separating fact from friction and that he got push back from teams on this. Says he hasn&#39;t spoken to Vegas directly. Maybe Vegas is talking to team Elliotte hasn&#39;t talked to but he doesn&#39;t have… <a href='https://t.co/SMOaHxrLmp'>pic.twitter.com/SMOaHxrLmp</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932477624556691641?ref_src=twsrc%5Etfw'>June 10, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>On Montreal: Elliotte says they are in on Nic Hague but he&#39;s also heard they want to upgrade on forward. <a href='https://twitter.com/hashtag/GoHabsGo?src=hash&amp;ref_src=twsrc%5Etfw'>#GoHabsGo</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a> <a href='https://twitter.com/hashtag/StanleyCup?src=hash&amp;ref_src=twsrc%5Etfw'>#StanleyCup</a> <a href='https://t.co/FnAANz3gw0'>pic.twitter.com/FnAANz3gw0</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932474194006061510?ref_src=twsrc%5Etfw'>June 10, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>On Seattle: Calls them lowkey about them being a team to do something and says they are eager to take a step this year. Might go after an offer sheet as they have cap flexibility. <a href='https://twitter.com/hashtag/seakraken?src=hash&amp;ref_src=twsrc%5Etfw'>#seakraken</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a> <a href='https://twitter.com/hashtag/StanleyCup?src=hash&amp;ref_src=twsrc%5Etfw'>#StanleyCup</a> <a href='https://t.co/V8gxYHrGiD'>pic.twitter.com/V8gxYHrGiD</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932473877579325694?ref_src=twsrc%5Etfw'>June 10, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>On Utah: They are expected to be active this offseason. He says, &quot;I heard that the Mammoth are discussing some stuff and some stuff that might not necessarily be considered small.&quot; He says the pressure is on and they are in the middle of a lot of things. <a href='https://twitter.com/hashtag/TusksUp?src=hash&amp;ref_src=twsrc%5Etfw'>#TusksUp</a> <a href='https://twitter.com/hashtag/UtahHC?src=hash&amp;ref_src=twsrc%5Etfw'>#UtahHC</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a>… <a href='https://t.co/mgrdoSGHLs'>pic.twitter.com/mgrdoSGHLs</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932472788708716692?ref_src=twsrc%5Etfw'>June 10, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>32 Thoughts Podcast: Elliotte explains that what he believes on JJ Peterka is that it&#39;s not that Buffalo won&#39;t trade him it&#39;s that they don&#39;t want to trade him. He has mentioned previously this is agent driven. <a href='https://twitter.com/hashtag/Sabrehood?src=hash&amp;ref_src=twsrc%5Etfw'>#Sabrehood</a> <a href='https://twitter.com/hashtag/NHL?src=hash&amp;ref_src=twsrc%5Etfw'>#NHL</a> <a href='https://twitter.com/hashtag/StanleyCup?src=hash&amp;ref_src=twsrc%5Etfw'>#StanleyCup</a> <a href='https://t.co/5Ncin7eFtJ'>pic.twitter.com/5Ncin7eFtJ</a></p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1932472151010881709?ref_src=twsrc%5Etfw'>June 10, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>Toronto, Carolina, and Vegas almost had a three-way deal in place that would&#39;ve sent Mitch Marner to Vegas and Mikko Rantanen to Toronto, per <a href='https://twitter.com/mirtle?ref_src=twsrc%5Etfw'>@mirtle</a>.<br><br>The deal reportedly fell through because Carolina and Vegas &quot;failed to find the right assets&quot; to complete it. <a href='https://t.co/dBrFLOl9mP'>pic.twitter.com/dBrFLOl9mP</a></p>&mdash; B/R Open Ice (@BR_OpenIce) <a href='https://twitter.com/BR_OpenIce/status/1932074239122616568?ref_src=twsrc%5Etfw'>June 9, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>I just finished reading <a href='https://twitter.com/CraigCustance?ref_src=twsrc%5Etfw'>@CraigCustance</a>’s book “The Franchise: The Business of Building Winning Teams”. The chapters on Julian Brisebois and Tom Dundon were my favourite. Reading about how those two think was really interesting.</p>&mdash; NHL Trade Alert (@NHLTradeAlert) <a href='https://twitter.com/NHLTradeAlert/status/1931796947582714295?ref_src=twsrc%5Etfw'>June 8, 2025</a></blockquote>"
+  },
+  {
+    
+    "embed": "<blockquote class='twitter-tweet'><p lang='en' dir='ltr'>Heard around the NHL combine this week:<br><br>— <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> among a handful of teams (BUF, UTA, SEA) looking to shake up their roster soon<br>— Shesterkin, Fox and Panarin may be only <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> untouchables in trade talk<br>— Keep an eye on Vladislav Gavrikov and <a href='https://twitter.com/hashtag/NYR?src=hash&amp;ref_src=twsrc%5Etfw'>#NYR</a> if Chris Drury can free up space</p>&mdash; Arthur Staple (@StapeAthletic) <a href='https://twitter.com/StapeAthletic/status/1931441841989116152?ref_src=twsrc%5Etfw'>June 7, 2025</a></blockquote>"
+  }
+]
