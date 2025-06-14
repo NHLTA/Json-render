@@ -2,111 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NHL Trade Alert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NHL Trade Alert – Home</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f8f9fa;
+      text-align: center;
+      padding: 2em;
+      background-color: #f4f4f4;
     }
-    #form-container, #password-form {
-      margin-bottom: 30px;
-      padding: 15px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    h1 {
+      color: #003366;
     }
-    input, textarea, button {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #007bff;
+    a {
+      display: block;
+      margin: 1em auto;
+      padding: 1em;
+      width: 250px;
+      background-color: #0066cc;
       color: white;
-      border: none;
-      cursor: pointer;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
     }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .tweet-container {
-      margin-bottom: 40px;
+    a:hover {
+      background-color: #004d99;
     }
   </style>
 </head>
 <body>
-
-  <!-- Password protection for form -->
-  <div id="password-form">
-    <h3>Enter password to unlock form</h3>
-    <input type="password" id="passwordInput" placeholder="Enter password"/>
-    <button onclick="checkPassword()">Submit</button>
-  </div>
-
-  <!-- Hidden tweet form -->
-  <div id="form-container" style="display:none;">
-    <h3>Add a Tweet</h3>
-    <input type="text" id="tweetUrl" placeholder="Paste Tweet URL (e.g., https://x.com/...)">
-    <button onclick="generateCode()">Generate Embed Code</button>
-    <textarea id="outputCode" rows="5" readonly></textarea>
-  </div>
-
-  <!-- Tweet display -->
-  <div id="tweets"></div>
-
-  <script>
-    // Load tweets.json
-    fetch('tweets.json')
-      .then(response => response.json())
-      .then(data => {
-        const tweetsDiv = document.getElementById('tweets');
-        data.forEach(tweet => {
-          const container = document.createElement('div');
-          container.className = 'tweet-container';
-          container.innerHTML = tweet.embed;
-          tweetsDiv.appendChild(container);
-        });
-
-        // Load Twitter widgets.js to render embeds
-        const script = document.createElement('script');
-        script.setAttribute('src', 'https://platform.twitter.com/widgets.js');
-        document.body.appendChild(script);
-      })
-      .catch(error => {
-        document.getElementById('tweets').innerHTML = '<p>Error loading tweets. Make sure tweets.json is uploaded and contains valid JSON.</p>';
-        console.error('Error loading tweets:', error);
-      });
-
-    // Password protection
-    function checkPassword() {
-      const input = document.getElementById('passwordInput').value;
-      if (input === "nhltradealert2025") {
-        document.getElementById('form-container').style.display = 'block';
-        document.getElementById('password-form').style.display = 'none';
-      } else {
-        alert("Incorrect password.");
-      }
-    }
-
-    // Generate Tweet embed code
-    function generateCode() {
-      const url = document.getElementById('tweetUrl').value.trim();
-
-      if (!url.includes("twitter.com") && !url.includes("x.com")) {
-        alert("Please enter a valid Twitter/X URL.");
-        return;
-      }
-
-      const embedCode = `<blockquote class="twitter-tweet"><a href="${url}"></a></blockquote>`;
-
-      document.getElementById('outputCode').value = embedCode;
-    }
-  </script>
-
+  <h1>NHL Trade Alert</h1>
+  <a href="/manual/index.html">View Manual Version</a>
+  <a href="/sociablekit/index.html">View SociableKIT Version</a>
 </body>
 </html>
