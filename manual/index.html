@@ -3,68 +3,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Manual NHL Trade Feed</title>
+  <title>NHL Trade Alert</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      background-color: #f2f2f2;
+      margin: 0;
       padding: 20px;
     }
 
-    .tweet {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      color: #003366;
+    }
+
+    .post-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .post {
+      background-color: white;
+      border-radius: 10px;
       padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .tweet h3 {
-      margin: 0 0 10px;
+    .post img {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .post-title {
+      font-weight: bold;
+      margin-bottom: 8px;
       font-size: 16px;
-    }
-
-    .tweet p {
-      margin: 0;
       color: #333;
+      text-align: center;
     }
 
-    .timestamp {
-      font-size: 12px;
-      color: #888;
-      margin-top: 8px;
+    a.tweet-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    @media (min-width: 600px) {
+      .post-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .post {
+        width: 45%;
+        margin: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Manual NHL Trade Feed</h1>
-  <div id="tweets-container">Loading tweets...</div>
+  <header>
+    <h1>NHL Trade Alert</h1>
+  </header>
+
+  <main>
+    <div class="post-container" id="post-container">
+      <!-- Posts will be inserted here by JavaScript -->
+    </div>
+  </main>
 
   <script>
-    fetch('tweets.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('tweets-container');
-        container.innerHTML = ''; // Clear loading text
+    async function loadPosts() {
+      try {
+        const response = await fetch('tweets.json');
+        const posts = await response.json();
+        const container = document.getElementById('post-container');
 
-        data.forEach(tweet => {
-          const tweetDiv = document.createElement('div');
-          tweetDiv.className = 'tweet';
+        // Clear existing content
+        container.innerHTML = '';
 
-          tweetDiv.innerHTML = `
-            <h3>${tweet.title}</h3>
-            <p>${tweet.text}</p>
-            <div class="timestamp">${tweet.timestamp || ''}</div>
-          `;
+        // Loop through posts
+        posts.forEach(post => {
+          const postDiv = document.createElement('div');
+          postDiv.className = 'post';
 
-          container.appendChild(tweetDiv);
+          const title = document.createElement('div');
+          title.className = 'post-title';
+          title.textContent = post.title || 'Untitled Post';
+
+          if (post.url) {
+            const link = document.createElement('a');
+            link.href = post.url;
+            link.target = '_blank';
+            link.className = 'tweet-link';
+
+            if (post.image) {
+              const img = document.createElement('img');
+              img.src = post.image;
+              img.alt = 'Tweet Screenshot';
+              link.appendChild(img);
+            }
+
+            postDiv.appendChild(title);
+            postDiv.appendChild(link);
+          } else if (post.image) {
+            const img = document.createElement('img');
+            img.src = post.image;
+            img.alt = 'Tweet Screenshot';
+            postDiv.appendChild(title);
+            postDiv.appendChild(img);
+          } else {
+            postDiv.appendChild(title);
+          }
+
+          container.appendChild(postDiv);
         });
-      })
-      .catch(error => {
-        document.getElementById('tweets-container').innerText = 'Failed to load tweets.';
-        console.error('Error fetching tweets.json:', error);
-      });
+      } catch (err) {
+        console.error('Failed to load posts:', err);
+      }
+    }
+
+    // Load posts on page load
+    window.addEventListener('DOMContentLoaded', loadPosts);
   </script>
 </body>
 </html>
