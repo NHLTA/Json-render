@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manual Twitter Post Feed</title>
+  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+</head>
+<body>
+  <header>
+    <h1>NHL Trade Alert - Manual Feed</h1>
+    <nav><a href="/sociablekit/">View SociableKIT Feed</a></nav>
+  </header>
+
+  <main id="tweets-container">
+    <!-- Add your manual tweets JSON loader here -->
+    <p>This is the manual feed version.</p>
+  </main>
+</body>
+</html>
