@@ -3,27 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NHL Trade Alert – Manual</title>
+  <title>Manual NHL Trade Feed</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
+      background: #f4f4f4;
       padding: 20px;
     }
+
     .tweet {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 15px;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .tweet h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .tweet p {
+      margin: 0;
+      color: #333;
+    }
+
+    .timestamp {
+      font-size: 12px;
+      color: #888;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
-  <h1>NHL Trade Alert – Manual Feed</h1>
+  <h1>Manual NHL Trade Feed</h1>
   <div id="tweets-container">Loading tweets...</div>
 
-  <script src="/script.js"></script>
+  <script>
+    fetch('tweets.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('tweets-container');
+        container.innerHTML = ''; // Clear loading text
+
+        data.forEach(tweet => {
+          const tweetDiv = document.createElement('div');
+          tweetDiv.className = 'tweet';
+
+          tweetDiv.innerHTML = `
+            <h3>${tweet.title}</h3>
+            <p>${tweet.text}</p>
+            <div class="timestamp">${tweet.timestamp || ''}</div>
+          `;
+
+          container.appendChild(tweetDiv);
+        });
+      })
+      .catch(error => {
+        document.getElementById('tweets-container').innerText = 'Failed to load tweets.';
+        console.error('Error fetching tweets.json:', error);
+      });
+  </script>
 </body>
 </html>
